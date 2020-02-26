@@ -11,7 +11,7 @@ object Main extends App {
   val s1 = Skill("s1")
   val availability = EventAvailability(
     interviewers = Set(
-      Interviewer("i0", Set(s0)),
+      Interviewer("i0", Set(s0, s1)),
       Interviewer("i1", Set(s1)),
     ),
     candidates = Set(
@@ -27,5 +27,5 @@ object Main extends App {
     candidateSkillMap = Map.empty
   )
 
-  println(InterviewProducer.createInterviews(availability).mkString("\n"))
+  println(InterviewProducer.suggestInterviewCombinations(availability).mkString("\n"))
 }

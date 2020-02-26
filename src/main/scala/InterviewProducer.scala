@@ -35,9 +35,14 @@ object InterviewProducer {
     }
   }
 
-  def createInterviews(
+  def suggestInterviewCombinations(
       availability: EventAvailability
-  ): Set[Set[Interview]] = produceNestedCombinations(Set.empty, availability)
+  ): Set[Set[Interview]] = {
+    val combinations = produceNestedCombinations(Set.empty, availability)
+    val maxParallelization = combinations.map(_.size).max
+
+    combinations.filter(_.size == maxParallelization)
+  }
 
   def getMatchingSkills(availability: EventAvailability)(
       candidate: Candidate,
