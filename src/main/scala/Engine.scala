@@ -3,10 +3,6 @@ object Engine {
   import InterviewADT._
   import InterviewOps._
 
-  case class Combination(
-      interview: Interview,
-      availability: EventAvailability
-  )
 
   private def produceNestedCombinations(
       decidedInterviews: Set[Interview],
@@ -51,7 +47,8 @@ object Engine {
     )
   }
 
-  private def mergeInterviewers(interviewers: Set[Interviewer]): Set[Interviewer] = {
+  private def mergeInterviewers(
+      interviewers: Set[Interviewer]): Set[Interviewer] = {
     interviewers
       .groupBy(_.name)
       .map {

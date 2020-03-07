@@ -67,5 +67,7 @@ object InterviewOps {
         candidateSkillMap = nCandidateSkillMap
       )
     }
+
+    def +(resource: Resource): EventAvailability = ???
   }
 }

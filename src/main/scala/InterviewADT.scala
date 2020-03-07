@@ -33,6 +33,11 @@ object InterviewADT {
       interviewStartTime: LocalDateTime = LocalDateTime.now()
   )
 
+  case class Combination(
+      interview: Interview,
+      availability: EventAvailability
+  )
+
   case class Interview(
       interviewer: Interviewer,
       candidate: Candidate,
