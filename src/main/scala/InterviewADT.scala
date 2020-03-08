@@ -4,7 +4,7 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 object InterviewADT {
-  trait Resource
+  sealed trait Resource
 
   // TODO: add skill priority
   case class Skill(name: String)
@@ -25,9 +25,9 @@ object InterviewADT {
 
   // TODO: add banned interviewer-candidate combinations
   case class EventAvailability(
-      interviewers: Set[Interviewer],
-      candidates: Set[Candidate],
-      rooms: Set[Room],
+      interviewers: Set[Interviewer] = Set.empty,
+      candidates: Set[Candidate] = Set.empty,
+      rooms: Set[Room] = Set.empty,
       candidateSkillMap: Map[Candidate, Set[Skill]] = Map.empty,
       interviewDuration: Duration = 1 hour,
       interviewStartTime: LocalDateTime = LocalDateTime.now()

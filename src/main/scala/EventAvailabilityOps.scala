@@ -2,49 +2,9 @@ import InterviewADT._
 
 object EventAvailabilityOps {
   implicit class EventAvailabilityOps(availability: EventAvailability) {
-
-    /**
-      * Add room to the event
-      */
-    def +(room: Room): EventAvailability = availability.copy(
-      rooms = availability.rooms + room
-    )
-
-    /**
-      * Add interviewer to the event
-      */
-    def +(interviewer: Interviewer): EventAvailability = availability.copy(
-      interviewers = availability.interviewers + interviewer
-    )
-
-    /**
-      * Add candidate to the event
-      */
-    def +(candidate: Candidate): EventAvailability = availability.copy(
-      candidates = availability.candidates + candidate,
-      candidateSkillMap = availability.candidateSkillMap + (candidate -> candidate.skills)
-    )
-
-    /**
-      * Remove an interviewer from the event
-      */
-    def -(interviewer: Interviewer): EventAvailability = availability.copy(
-      interviewers = availability.interviewers - interviewer
-    )
-
-    /**
-      * Remove a candidate from the event
-      */
-    def -(candidate: Candidate): EventAvailability = availability.copy(
-      candidates = availability.candidates - candidate,
-    )
-
-    /**
-      * Remove room from the event
-      */
-    def -(room: Room): EventAvailability = availability.copy(
-      rooms = availability.rooms - room
-    )
+    def resourceCount: Int = {
+      availability.rooms.size + availability.candidates.size + availability.interviewers.size
+    }
 
     /**
       * Adding an interview to the event
@@ -67,7 +27,32 @@ object EventAvailabilityOps {
       )
     }
 
-    def +(resource: Resource): EventAvailability = ???
+    def has(resource: Resource): Boolean = {
+      resource match {
+        case c: Candidate   => availability.candidates.contains(c)
+        case i: Interviewer => availability.interviewers.contains(i)
+        case r: Room        => availability.rooms.contains(r)
+      }
+    }
+
+    def +(resource: Resource): EventAvailability =
+      resource match {
+        case c: Candidate =>
+          availability.copy(candidates = availability.candidates + c)
+        case i: Interviewer =>
+          availability.copy(interviewers = availability.interviewers + i)
+        case r: Room => availability.copy(rooms = availability.rooms + r)
+      }
+
+    def -(resource: Resource): EventAvailability =
+      resource match {
+        case c: Candidate =>
+          availability.copy(candidates = availability.candidates - c)
+        case i: Interviewer =>
+          availability.copy(interviewers = availability.interviewers - i)
+        case r: Room => availability.copy(rooms = availability.rooms - r)
+      }
+
     def interviewSuggestions: Set[Set[Interview]] = {
       InterviewSuggestions.suggestInterviews(availability)
     }
