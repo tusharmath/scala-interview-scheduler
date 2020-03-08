@@ -5,7 +5,7 @@ import scala.language.postfixOps
 
 object Main extends App {
   import InterviewADT._
-  import InterviewOps._
+  import EventAvailabilityOps._
 
   private val s0 = Skill("s0")
   private val s1 = Skill("s1")

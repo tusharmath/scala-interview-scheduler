@@ -1,6 +1,6 @@
 import InterviewADT._
 
-object InterviewOps {
+object EventAvailabilityOps {
   implicit class EventAvailabilityOps(availability: EventAvailability) {
 
     /**
