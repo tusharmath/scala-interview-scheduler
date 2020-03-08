@@ -1,5 +1,4 @@
-object Engine {
-
+object InterviewSuggestions {
   import InterviewADT._
   import InterviewOps._
 
@@ -67,7 +66,7 @@ object Engine {
       .toSet
   }
 
-  def suggestInterviewCombinations(
+  def suggestInterviews(
       availability: EventAvailability): Set[Set[Interview]] = {
     val combinations       = produceNestedCombinations(Set.empty, availability)
     val maxParallelization = combinations.map(_.size).max
@@ -90,9 +89,5 @@ object Engine {
         case Some(skills) => skills.diff(interviewer.skills)
         case None         => interviewer.skills.intersect(candidate.skills)
       } else Set.empty
-  }
-
-  def s(nest: Int): String = {
-    "".padTo(nest, ' ')
   }
 }

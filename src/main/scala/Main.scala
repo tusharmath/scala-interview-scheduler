@@ -5,6 +5,7 @@ import scala.language.postfixOps
 
 object Main extends App {
   import InterviewADT._
+  import InterviewOps._
 
   private val s0 = Skill("s0")
   private val s1 = Skill("s1")
@@ -29,5 +30,5 @@ object Main extends App {
     rooms = rooms
   )
 
-  println(Engine.suggestInterviewCombinations(availability).mkString("\n"))
+  println(availability.interviewSuggestions.mkString("\n"))
 }

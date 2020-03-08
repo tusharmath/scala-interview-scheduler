@@ -4,45 +4,44 @@ object InterviewOps {
   implicit class EventAvailabilityOps(availability: EventAvailability) {
 
     /**
-     * Add room to the event
-     */
+      * Add room to the event
+      */
     def +(room: Room): EventAvailability = availability.copy(
       rooms = availability.rooms + room
     )
 
     /**
-     * Add interviewer to the event
-     */
+      * Add interviewer to the event
+      */
     def +(interviewer: Interviewer): EventAvailability = availability.copy(
       interviewers = availability.interviewers + interviewer
     )
 
     /**
-     * Add candidate to the event
-     */
+      * Add candidate to the event
+      */
     def +(candidate: Candidate): EventAvailability = availability.copy(
       candidates = availability.candidates + candidate,
       candidateSkillMap = availability.candidateSkillMap + (candidate -> candidate.skills)
     )
 
-
     /**
-     * Remove an interviewer from the event
-     */
+      * Remove an interviewer from the event
+      */
     def -(interviewer: Interviewer): EventAvailability = availability.copy(
       interviewers = availability.interviewers - interviewer
     )
 
     /**
-     * Remove a candidate from the event
-     */
+      * Remove a candidate from the event
+      */
     def -(candidate: Candidate): EventAvailability = availability.copy(
       candidates = availability.candidates - candidate,
     )
 
     /**
-     * Remove room from the event
-     */
+      * Remove room from the event
+      */
     def -(room: Room): EventAvailability = availability.copy(
       rooms = availability.rooms - room
     )
@@ -55,7 +54,7 @@ object InterviewOps {
       val nCandidateSkillMap =
         availability.candidateSkillMap.get(interview.candidate) match {
           case Some(skillSet) =>
-            val nSkillSet = (skillSet + interview.skill)
+            val nSkillSet = skillSet + interview.skill
             availability.candidateSkillMap + (interview.candidate -> nSkillSet)
           case None => availability.candidateSkillMap
         }
@@ -69,5 +68,9 @@ object InterviewOps {
     }
 
     def +(resource: Resource): EventAvailability = ???
+    def interviewSuggestions: Set[Set[Interview]] = {
+      InterviewSuggestions.suggestInterviews(availability)
+    }
   }
+
 }
