@@ -1,7 +1,6 @@
 import java.time.LocalDateTime
 
 import scala.concurrent.duration._
-import scala.language.postfixOps
 
 object Main extends App {
   import InterviewADT._
@@ -31,4 +30,5 @@ object Main extends App {
   )
 
   println(availability.interviewSuggestions.mkString("\n"))
+
 }

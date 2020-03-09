@@ -30,5 +30,4 @@ object EventAvailabilityOpsSpec extends DefaultRunnableSpec {
           }))
     }
   )
-
 }

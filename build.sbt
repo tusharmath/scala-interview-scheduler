@@ -11,3 +11,7 @@ libraryDependencies += "dev.zio" %% "zio-test"     % zioVersion % "test"
 libraryDependencies += "dev.zio" %% "zio-test-sbt" % zioVersion % "test"
 
 testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+
+scalacOptions ++= Seq(
+  "-language:postfixOps"
+)
