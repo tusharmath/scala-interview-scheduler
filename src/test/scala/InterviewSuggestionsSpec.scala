@@ -1,14 +1,9 @@
-import java.time.LocalDateTime
-
 import InterviewADT._
 import zio.test.Assertion._
 import zio.test._
 
-import scala.concurrent.duration._
-
 object InterviewSuggestionsSpec extends DefaultRunnableSpec {
   import EventAvailabilityOps._
-  import InterviewSuggestionsOps._
 
   def spec = suite("InterviewSuggestionsSpec") {
     suite("interviewSuggestions")(
