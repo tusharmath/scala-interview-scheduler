@@ -2,7 +2,6 @@ object InterviewSuggestions {
   import InterviewADT._
   import EventAvailabilityOps._
 
-
   private def produceNestedCombinations(
       decidedInterviews: Set[Interview],
       availability: EventAvailability
@@ -83,8 +82,9 @@ object InterviewSuggestions {
     val candidateAvailable   = availability.candidates contains candidate
     val interviewerAvailable = availability.interviewers contains interviewer
     val roomAvailable        = availability.rooms contains room
+    val isReferral           = availability.referrals.contains((candidate, interviewer))
 
-    if (candidateAvailable && interviewerAvailable && roomAvailable)
+    if (candidateAvailable && interviewerAvailable && roomAvailable && !isReferral)
       availability.candidateSkillMap.get(candidate) match {
         case Some(skills) => skills.diff(interviewer.skills)
         case None         => interviewer.skills.intersect(candidate.skills)

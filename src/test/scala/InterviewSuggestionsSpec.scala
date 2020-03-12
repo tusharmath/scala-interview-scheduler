@@ -8,9 +8,10 @@ import scala.concurrent.duration._
 
 object InterviewSuggestionsSpec extends DefaultRunnableSpec {
   import EventAvailabilityOps._
+  import InterviewSuggestionsOps._
 
-  def spec = suite("InterviewSuggestionsSpec")(
-    suite("interviewSuggestions") {
+  def spec = suite("InterviewSuggestionsSpec") {
+    suite("interviewSuggestions")(
       test("should remove resources") {
 
         val s0 = Skill("s0")
@@ -25,15 +26,13 @@ object InterviewSuggestionsSpec extends DefaultRunnableSpec {
         val r0 = Room("r0")
         val r1 = Room("r1")
 
-        val rooms        = Set(r0, r1)
-        val candidates   = Set(c0, c1)
+        val rooms = Set(r0, r1)
+        val candidates = Set(c0, c1)
         val interviewers = Set(i0, i1)
 
         val availability = EventAvailability(
           interviewers = interviewers,
           candidates = candidates,
-          interviewDuration = 45 minutes,
-          interviewStartTime = LocalDateTime.of(2020, 3, 14, 10, 0),
           rooms = rooms
         )
 
@@ -45,7 +44,38 @@ object InterviewSuggestionsSpec extends DefaultRunnableSpec {
         )
 
         assert(actual)(equalTo(expected))
+      },
+      test("should skip referral taking interviews") {
+        val s0 = Skill("s0")
+
+        val i0 = Interviewer("i0", Set(s0))
+        val i1 = Interviewer("i1", Set(s0))
+
+        val c0 = Candidate("c0", Set(s0))
+
+        val r0 = Room("r0")
+        val r1 = Room("r1")
+
+        val rooms = Set(r0, r1)
+        val candidates = Set(c0)
+        val interviewers = Set(i0, i1)
+
+        val availability = EventAvailability(
+          interviewers = interviewers,
+          candidates = candidates,
+          rooms = rooms,
+          referrals = Set((c0, i0))
+        )
+
+        val actual = availability.interviewSuggestions
+
+        val expected = Set[Set[Interview]](
+          Set(Interview(i1, c0, s0, r0)),
+          Set(Interview(i1, c0, s0, r1))
+        )
+
+        assert(actual)(equalTo(expected))
       }
-    }
-  )
+    )
+  }
 }
