@@ -1,10 +1,11 @@
 import java.time.LocalDateTime
 
 import scala.concurrent.duration._
-
 object Main extends App {
+
   import InterviewADT._
   import EventAvailabilityOps._
+  import InterviewSuggestionsOps._
 
   private val s0 = Skill("s0")
   private val s1 = Skill("s1")
@@ -29,6 +30,5 @@ object Main extends App {
     rooms = rooms
   )
 
-  println(availability.interviewSuggestions.mkString("\n"))
-
+  println(availability.interviewSuggestions.show)
 }

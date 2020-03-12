@@ -1,7 +1,6 @@
 import java.time.LocalDateTime
 
 import scala.concurrent.duration._
-import scala.language.postfixOps
 
 object InterviewADT {
   sealed trait Resource
@@ -43,9 +42,5 @@ object InterviewADT {
       candidate: Candidate,
       skill: Skill,
       room: Room
-  ) {
-    override def toString: String = {
-      s"[${interviewer.name} ${candidate.name} ${room.name}]"
-    }
-  }
+  )
 }

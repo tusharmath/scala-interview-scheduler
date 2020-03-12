@@ -57,5 +57,4 @@ object EventAvailabilityOps {
       InterviewSuggestions.suggestInterviews(availability)
     }
   }
-
 }
