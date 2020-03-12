@@ -24,12 +24,26 @@ object InterviewADT {
 
   // TODO: add banned interviewer-candidate combinations
   case class EventAvailability(
+      // Interviewers for the interview
       interviewers: Set[Interviewer] = Set.empty,
+
+      // Candidates for the interview
       candidates: Set[Candidate] = Set.empty,
+
+      // Rooms available for the interview
       rooms: Set[Room] = Set.empty,
+
+      // Skills that have been interviewed for
       candidateSkillMap: Map[Candidate, Set[Skill]] = Map.empty,
+
+      // Time period for one interview
       interviewDuration: Duration = 1 hour,
-      interviewStartTime: LocalDateTime = LocalDateTime.now()
+
+      // Starting time for the interview
+      interviewStartTime: LocalDateTime = LocalDateTime.now(),
+
+      // Referrals
+      referrals: Set[(Candidate, Interviewer)] = Set.empty
   )
 
   case class Combination(
