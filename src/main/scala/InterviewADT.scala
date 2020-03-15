@@ -7,9 +7,9 @@ object InterviewADT {
 
   trait Experience
   object Experience {
-    object High   extends Experience
-    object Medium extends Experience
-    object Low    extends Experience
+    case object High   extends Experience
+    case object Medium extends Experience
+    case object Low    extends Experience
   }
 
   // TODO: add skill priority
