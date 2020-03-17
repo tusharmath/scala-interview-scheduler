@@ -2,9 +2,8 @@ package db
 
 import java.nio.ByteBuffer
 
-import boopickle.Default.{Pickle, Unpickle}
+import boopickle.Default.{Pickle, Unpickle, _}
 import zio.{Task, UIO, ZIO}
-import boopickle.Default._
 
 sealed trait DBNode
 object DBNode {
