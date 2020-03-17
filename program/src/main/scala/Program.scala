@@ -1,8 +1,8 @@
 import java.io.IOException
 
-import InterviewADT.{Candidate, Interviewer, Skill}
-import zio.console.{Console, getStrLn, putStr, putStrLn}
-import zio.{UIO, ZIO}
+import InterviewADT._
+import zio.console.Console
+import zio.{UIO, ZIO, console}
 
 object Program {
 
@@ -17,13 +17,13 @@ object Program {
 
   def ask(question: String): ZIO[Console, IOException, String] =
     for {
-      _     <- putStr(question)
-      input <- getStrLn
+      _     <- console.putStr(question)
+      input <- console.getStrLn
     } yield input
 
   def say(input: Any*): ZIO[Console, Nothing, Unit] =
     for {
-      _ <- putStrLn(input.map(_.toString).mkString(" "))
+      _ <- console.putStrLn(input.map(_.toString).mkString(" "))
     } yield ()
 
   def tokenfy(input: String): Array[String] = {

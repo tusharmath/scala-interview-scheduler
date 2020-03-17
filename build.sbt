@@ -4,18 +4,33 @@ version := "0.1"
 
 scalaVersion := "2.13.1"
 
+// ZIO Core
 lazy val zioVersion = "1.0.0-RC18-1"
 
-libraryDependencies += "dev.zio" %% "zio"          % zioVersion
-libraryDependencies += "dev.zio" %% "zio-test"     % zioVersion % "test"
-libraryDependencies += "dev.zio" %% "zio-test-sbt" % zioVersion % "test"
+// Project Scheduler
+lazy val scheduler = project in file("scheduler")
 
-libraryDependencies += "dev.zio" %% "zio-rocksdb" % "0.2.0"
+// Project Storage
+lazy val storage = (project in file("storage")).settings(
+  libraryDependencies ++= Seq(
+    "io.suzaku" %% "boopickle"   % "1.3.1",
+    "dev.zio"   %% "zio-rocksdb" % "0.2.0"
+  ))
 
-libraryDependencies += "io.suzaku" %% "boopickle" % "1.3.1"
+// Project Program
+lazy val program = (project in file("program"))
+  .dependsOn(scheduler)
 
-testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+// Testing
+ThisBuild / libraryDependencies ++= Seq(
+  "dev.zio" %% "zio"          % zioVersion,
+  "dev.zio" %% "zio-test"     % zioVersion % "test",
+  "dev.zio" %% "zio-test-sbt" % zioVersion % "test"
+)
 
-scalacOptions ++= Seq(
+ThisBuild / testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+
+// Global Options
+ThisBuild / scalacOptions ++= Seq(
   "-language:postfixOps"
 )

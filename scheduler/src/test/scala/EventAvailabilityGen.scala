@@ -1,4 +1,4 @@
-import InterviewADT.{Candidate, EventAvailability, Interviewer, Room, Skill}
+import InterviewADT._
 import zio.test.Gen
 
 object EventAvailabilityGen {

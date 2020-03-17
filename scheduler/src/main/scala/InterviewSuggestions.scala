@@ -1,6 +1,6 @@
 object InterviewSuggestions {
-  import InterviewADT._
   import EventAvailabilityOps._
+  import InterviewADT._
 
   private def produceNestedCombinations(
       decidedInterviews: Set[Interview],
