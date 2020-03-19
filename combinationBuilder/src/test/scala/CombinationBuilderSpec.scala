@@ -3,7 +3,9 @@ import zio.test.{DefaultRunnableSpec, _}
 
 import scala.collection.immutable.Set
 
-object CombinationBuilderSpec extends DefaultRunnableSpec with ExampleRunnableSpec {
+object CombinationBuilderSpec
+    extends DefaultRunnableSpec
+    with ExampleRunnableSpec {
   private abstract class LRes(val kind: Int)   extends Resource
   private case class Interviewer(name: String) extends LRes(0)
   private case class Candidate(name: String)   extends LRes(1)
@@ -19,37 +21,37 @@ object CombinationBuilderSpec extends DefaultRunnableSpec with ExampleRunnableSp
 
   override def spec =
     suite("combination()")(
-      testEg[CombinationSet[String]]("examples")(
+      testEg[CombinationSet]("examples")(
         eg(
-          actual = combination[String](Set(i0, i1, c0)),
+          actual = combination(Set(i0, i1, c0)),
           expected = Set(
             Set(Set(i0, c0)),
             Set(Set(i1, c0))
           )
         ),
         eg(
-          actual = combination[String](Set(i0, i1, c0)),
+          actual = combination(Set(i0, i1, c0)),
           expected = Set(
             Set(Set(i0, c0)),
             Set(Set(i1, c0))
           )
         ),
         eg(
-          actual = combination[String](Set(i0, i1, c0, c1)),
+          actual = combination(Set(i0, i1, c0, c1)),
           expected = Set(
             Set(Set(i0, c0), Set(i1, c1)),
             Set(Set(i1, c0), Set(i0, c1))
           )
         ),
         eg(
-          actual = combination[String](Set(i0, i1, c0, r0)),
+          actual = combination(Set(i0, i1, c0, r0)),
           expected = Set(
             Set(Set(i0, c0, r0)),
             Set(Set(i1, c0, r0))
           )
         ),
         eg(
-          actual = combination[String](Set(i0, i1, c0, c1, r0)),
+          actual = combination(Set(i0, i1, c0, c1, r0)),
           expected = Set(
             Set(Set(i0, c0, r0)),
             Set(Set(i1, c0, r0)),
@@ -58,7 +60,7 @@ object CombinationBuilderSpec extends DefaultRunnableSpec with ExampleRunnableSp
           )
         ),
         eg(
-          actual = combination[String](Set(i0, c0, r0, r1)),
+          actual = combination(Set(i0, c0, r0, r1)),
           expected = Set(
             Set(Set(i0, c0, r0)),
             Set(Set(i0, c0, r1))

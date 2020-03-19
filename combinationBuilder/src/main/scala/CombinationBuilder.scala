@@ -1,36 +1,41 @@
 object CombinationBuilder {
-
   trait Resource {
     val kind: Int
   }
 
-  type Combination[A]    = Set[Resource]
-  type CombinationSet[A] = Set[Set[Combination[A]]]
+  type Combination    = Set[Resource]
+  type CombinationSet = Set[Set[Combination]]
 
-  def combination[A](resources: Set[Resource]): CombinationSet[A] = {
+  def combination(resources: Set[Resource]): CombinationSet = {
     val resourceMap       = resources.groupBy(_.kind)
     val resourceKindCount = resourceMap.keys.size
 
     createCombinations(resources, resourceKindCount)
   }
 
-  private def createCombinations[A](
+  private def createCombinations(
       resources: Set[Resource],
       setSize: Int
-  ): CombinationSet[A] = {
-    resources
-      .subsets(setSize)
-      .filter(differentKind(setSize))
-      .flatMap(combination => {
-        val K = createCombinations(resources -- combination, setSize)
+  ): CombinationSet = {
+    val combinations =
+      resources.subsets(setSize).filter(differentKind(setSize)).toSet
 
-        if (K.isEmpty) Set(Set(combination)) else K.map(KK => KK + combination)
+    for {
+      combination  <- combinations
+      pCombination <- pendingCombinations(resources, setSize, combination)
+    } yield pCombination + combination
 
-      })
-      .toSet
   }
 
-  private def differentKind[A](setSize: Int)(S: Set[Resource]) = {
+  private def pendingCombinations(
+      resources: Set[Resource],
+      setSize: Int,
+      combination: Set[Resource]): CombinationSet = {
+    val combinationSet = createCombinations(resources -- combination, setSize)
+    if (combinationSet.isEmpty) Set(Set()) else combinationSet
+  }
+
+  private def differentKind(setSize: Int)(S: Set[Resource]) = {
     S.groupBy(_.kind).size == setSize
   }
 }
