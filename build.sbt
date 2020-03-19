@@ -21,6 +21,9 @@ lazy val storage = (project in file("storage")).settings(
 lazy val program = (project in file("program"))
   .dependsOn(scheduler)
 
+// Project CombinationBuilder
+lazy val combinationBuilder = project in file("combinationBuilder")
+
 // Testing
 ThisBuild / libraryDependencies ++= Seq(
   "dev.zio" %% "zio"          % zioVersion,
