@@ -88,10 +88,8 @@ object CombinationBuilderSpec
           eg(
             actual = combinationWith(Set(i0, i1, c0))(combination => {
               (for {
-                mI <- combination.find(_.isInstanceOf[Interviewer])
-                mC <- combination.find(_.isInstanceOf[Candidate])
-                i  <- mI.as[Interviewer]
-                c  <- mC.as[Candidate]
+                i <- combination.findByType[Interviewer]
+                c <- combination.findByType[Candidate]
               } yield c.skills.intersect(i.skills).nonEmpty).getOrElse(false)
             }),
             expected = Set(Set(Set(i0, c0)))
