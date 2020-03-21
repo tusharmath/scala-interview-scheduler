@@ -3,27 +3,31 @@ object CombinationBuilder {
     val kind: Int
   }
 
-  type Combination    = Set[Resource]
-  type CombinationSet = Set[Set[Combination]]
+  type Combination[R <: Resource]    = Set[R]
+  type CombinationSet[R <: Resource] = Set[Set[Combination[R]]]
 
-  def combinationWith(resources: Set[Resource])(
-      cond: Set[Resource] => Boolean) = {
+  def combinationWith[R <: Resource](
+      resources: Set[R]
+  )(cond: Set[R] => Boolean): CombinationSet[R] = {
     val resourceMap       = resources.groupBy(_.kind)
     val resourceKindCount = resourceMap.keys.size
 
     createCombinations(resources, resourceKindCount, cond)
   }
-  def combination(resources: Set[Resource]): CombinationSet = {
+  def combination[R <: Resource](resources: Set[R]): CombinationSet[R] = {
     combinationWith(resources)(_ => true)
   }
 
-  private def createCombinations(
-      resources: Set[Resource],
+  private def createCombinations[R <: Resource](
+      resources: Set[R],
       setSize: Int,
-      cond: Set[Resource] => Boolean
-  ): CombinationSet = {
+      cond: Set[R] => Boolean
+  ): CombinationSet[R] = {
     val combinations =
-      resources.subsets(setSize).filter(differentKind(setSize, cond)).toSet
+      resources
+        .subsets(setSize)
+        .filter(differentKind(setSize, cond))
+        .toSet
 
     for {
       combination  <- combinations
@@ -32,18 +36,21 @@ object CombinationBuilder {
 
   }
 
-  private def pendingCombinations(
-      resources: Set[Resource],
+  private def pendingCombinations[R <: Resource](
+      resources: Set[R],
       setSize: Int,
-      combination: Set[Resource],
-      cond: Set[Resource] => Boolean): CombinationSet = {
+      combination: Set[R],
+      cond: Set[R] => Boolean
+  ): CombinationSet[R] = {
     val combinationSet =
       createCombinations(resources -- combination, setSize, cond)
     if (combinationSet.isEmpty) Set(Set()) else combinationSet
   }
 
-  private def differentKind(setSize: Int, cond: Set[Resource] => Boolean)(
-      S: Set[Resource]) = {
+  private def differentKind[R <: Resource](
+      setSize: Int,
+      cond: Set[R] => Boolean
+  )(S: Set[R]) = {
     S.groupBy(_.kind).size == setSize && cond(S)
   }
 }
