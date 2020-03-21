@@ -3,6 +3,7 @@ import zio.test.{DefaultRunnableSpec, _}
 
 import scala.collection.immutable.Set
 import scala.reflect.ClassTag
+import Prelude._
 
 object CombinationBuilderSpec
     extends DefaultRunnableSpec
@@ -16,12 +17,6 @@ object CombinationBuilderSpec
   private case class Room(name: String) extends LRes(2)
 
   // Instances
-  implicit class AsOp(any: Any) {
-    def as[A](implicit tag: ClassTag[A]) = any match {
-      case a: A => Some(a)
-      case _    => None
-    }
-  }
 
   override def spec =
     suite("CombinationBuilder")(
