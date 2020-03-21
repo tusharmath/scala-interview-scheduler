@@ -7,6 +7,11 @@ scalaVersion := "2.13.1"
 // ZIO Core
 lazy val zioVersion = "1.0.0-RC18-1"
 
+
+
+// Project Prelude
+lazy val prelude = project in file("prelude")
+
 // Project Scheduler
 lazy val scheduler = project in file("scheduler")
 
