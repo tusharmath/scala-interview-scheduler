@@ -1,9 +1,9 @@
 import CombinationBuilder._
+import Prelude._
+import PreludeTest._
 import zio.test.{DefaultRunnableSpec, _}
 
 import scala.collection.immutable.Set
-import scala.reflect.ClassTag
-import Prelude._
 
 object CombinationBuilderSpec
     extends DefaultRunnableSpec
