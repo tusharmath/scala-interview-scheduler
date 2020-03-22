@@ -1,5 +1,4 @@
 import CombinationBuilder.{Resource, combination, combinationWith}
-import Prelude._
 import PreludeTest.ExampleRunnableSpec
 import zio.test.{DefaultRunnableSpec, suite}
 
