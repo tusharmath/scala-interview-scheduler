@@ -1,7 +1,7 @@
-import CombinationBuilder._
+import CombinationBuilder.{Resource, combination, combinationWith}
 import Prelude._
-import PreludeTest._
-import zio.test.{DefaultRunnableSpec, _}
+import PreludeTest.ExampleRunnableSpec
+import zio.test.{DefaultRunnableSpec, suite}
 
 import scala.collection.immutable.Set
 

@@ -7,18 +7,9 @@ scalaVersion := "2.13.1"
 // ZIO Core
 lazy val zioVersion = "1.0.0-RC18-1"
 
-// Project Prelude
-lazy val prelude = project in file("prelude")
-
-// Project PreludeTest
-lazy val preludeTest = (project in file("prelude-test")).settings(
-  libraryDependencies += "dev.zio" %% "zio-test" % zioVersion
-)
-
 // Project Scheduler
 lazy val scheduler =
   (project in file("scheduler"))
-    .dependsOn(combinationBuilder, prelude, preludeTest)
 
 // Project Storage
 lazy val storage = (project in file("storage")).settings(
@@ -31,10 +22,6 @@ lazy val storage = (project in file("storage")).settings(
 // Project Program
 lazy val program = (project in file("program"))
   .dependsOn(scheduler)
-
-// Project CombinationBuilder
-lazy val combinationBuilder =
-  (project in file("combinationBuilder")).dependsOn(prelude, preludeTest)
 
 // Testing
 ThisBuild / libraryDependencies ++= Seq(
