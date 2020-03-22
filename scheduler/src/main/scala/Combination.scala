@@ -1,4 +1,4 @@
-object Combination {
+package object Combination {
   trait Resource {
     val kind: Int
   }
