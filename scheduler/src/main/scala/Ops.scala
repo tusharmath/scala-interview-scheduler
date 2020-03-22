@@ -1,6 +1,11 @@
 import InterviewADT._
 
-object EventAvailabilityOps {
+package object Ops {
+  implicit class ResourceOps(resource: EventResource) {
+    def +(resource0: EventResource): EventAvailability = {
+      EventAvailability() + resource + resource0
+    }
+  }
   implicit class EventAvailabilityOps(availability: EventAvailability) {
     def resourceCount: Int = {
       availability.rooms.size + availability.candidates.size + availability.interviewers.size
@@ -27,7 +32,7 @@ object EventAvailabilityOps {
       )
     }
 
-    def has(resource: Resource): Boolean = {
+    def has(resource: EventResource): Boolean = {
       resource match {
         case c: Candidate   => availability.candidates.contains(c)
         case i: Interviewer => availability.interviewers.contains(i)
@@ -35,7 +40,7 @@ object EventAvailabilityOps {
       }
     }
 
-    def +(resource: Resource): EventAvailability =
+    def +(resource: EventResource): EventAvailability =
       resource match {
         case c: Candidate =>
           availability.copy(candidates = availability.candidates + c)
@@ -44,7 +49,7 @@ object EventAvailabilityOps {
         case r: Room => availability.copy(rooms = availability.rooms + r)
       }
 
-    def -(resource: Resource): EventAvailability =
+    def -(resource: EventResource): EventAvailability =
       resource match {
         case c: Candidate =>
           availability.copy(candidates = availability.candidates - c)
@@ -53,8 +58,5 @@ object EventAvailabilityOps {
         case r: Room => availability.copy(rooms = availability.rooms - r)
       }
 
-    def interviewSuggestions: Set[Set[Interview]] = {
-      InterviewSuggestions.suggestInterviews(availability)
-    }
   }
 }

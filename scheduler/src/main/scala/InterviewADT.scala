@@ -3,7 +3,8 @@ import java.time.LocalDateTime
 import scala.concurrent.duration._
 
 object InterviewADT {
-  sealed trait Resource
+  sealed abstract class EventResource(val kind: Int)
+      extends CombinationBuilder.Resource
 
   trait Experience
   object Experience {
@@ -21,7 +22,7 @@ object InterviewADT {
       name: String,
       skills: Set[Skill] = Set.empty,
       company: Option[String] = None
-  ) extends Resource
+  ) extends EventResource(0)
 
   // TODO: add interviewer level
   case class Interviewer(
@@ -32,9 +33,9 @@ object InterviewADT {
       // How preferred is this Interviewer
       // Typically we want to save certain interviewers for later
       preference: Experience = Experience.Medium
-  ) extends Resource
+  ) extends EventResource(1)
 
-  case class Room(name: String) extends Resource
+  case class Room(name: String) extends EventResource(2)
 
   case class EventAvailability(
       // Interviewers for the interview
