@@ -1,6 +1,6 @@
 object InterviewSuggestions {
   import InterviewADT._
-  import Syntax._
+  import syntax._
 
   def toInterview(set: Set[EventResource]): Option[Interview] =
     for {

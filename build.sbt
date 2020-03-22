@@ -5,7 +5,7 @@ version := "0.1"
 scalaVersion := "2.13.1"
 
 // ZIO Core
-lazy val zioVersion = "1.0.0-RC18-1"
+lazy val zioVersion = "1.0.0-RC18"
 
 // Project Scheduler
 lazy val scheduler =
@@ -34,5 +34,7 @@ ThisBuild / testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
 
 // Global Options
 ThisBuild / scalacOptions ++= Seq(
-  "-language:postfixOps"
+  "-language:postfixOps",
+  "-language:implicitConversions",
+  "-feature"
 )

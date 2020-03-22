@@ -1,6 +1,6 @@
 import InterviewADT._
 
-package object Ops {
+object Ops {
   implicit class ResourceOps(resource: EventResource) {
     def +(resource0: EventResource): EventAvailability = {
       EventAvailability() + resource + resource0

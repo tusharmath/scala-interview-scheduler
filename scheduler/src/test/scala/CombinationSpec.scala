@@ -4,10 +4,8 @@ import zio.test.{DefaultRunnableSpec, suite}
 
 import scala.collection.immutable.Set
 
-object CombinationSpec
-    extends DefaultRunnableSpec
-    with ExampleRunnableSpec {
-  import Syntax._
+object CombinationSpec extends DefaultRunnableSpec with ExampleRunnableSpec {
+  import syntax._
 
   private sealed abstract class LRes(val kind: Int) extends Resource
   private case class Interviewer(name: String, skills: Set[String] = Set.empty)
