@@ -6,11 +6,11 @@ package object adt {
   sealed abstract class EventResource(val kind: Int)
       extends Combination.Resource
 
-  trait Experience
-  object Experience {
-    case object High   extends Experience
-    case object Medium extends Experience
-    case object Low    extends Experience
+  abstract class OrderPreference(value: Int)
+  object OrderPreference {
+    case object High    extends OrderPreference(2)
+    case object Default extends OrderPreference(1)
+    case object Low     extends OrderPreference(0)
   }
 
   // TODO: add skill priority
@@ -32,7 +32,7 @@ package object adt {
       skills: Set[Skill] = Set.empty,
       // How preferred is this Interviewer
       // Typically we want to save certain interviewers for later
-      preference: Experience = Experience.Medium
+      preference: OrderPreference = OrderPreference.Default
   ) extends EventResource(1)
 
   case class Room(name: String) extends EventResource(2)
