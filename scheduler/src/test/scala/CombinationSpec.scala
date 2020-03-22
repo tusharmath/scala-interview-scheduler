@@ -1,12 +1,13 @@
-import CombinationBuilder.{Resource, combination, combinationWith}
+import Combination.{Resource, gen, genWith}
 import PreludeTest.ExampleRunnableSpec
 import zio.test.{DefaultRunnableSpec, suite}
 
 import scala.collection.immutable.Set
 
-object CombinationBuilderSpec
+object CombinationSpec
     extends DefaultRunnableSpec
     with ExampleRunnableSpec {
+  import Syntax._
 
   private sealed abstract class LRes(val kind: Int) extends Resource
   private case class Interviewer(name: String, skills: Set[String] = Set.empty)
@@ -29,35 +30,35 @@ object CombinationBuilderSpec
 
         testEg("cross product")(
           eg(
-            actual = combination(Set(i0, i1, c0)),
+            actual = gen(Set(i0, i1, c0)),
             expected = Set(
               Set(Set(i0, c0)),
               Set(Set(i1, c0))
             )
           ),
           eg(
-            actual = combination(Set(i0, i1, c0)),
+            actual = gen(Set(i0, i1, c0)),
             expected = Set(
               Set(Set(i0, c0)),
               Set(Set(i1, c0))
             )
           ),
           eg(
-            actual = combination(Set(i0, i1, c0, c1)),
+            actual = gen(Set(i0, i1, c0, c1)),
             expected = Set(
               Set(Set(i0, c0), Set(i1, c1)),
               Set(Set(i1, c0), Set(i0, c1))
             )
           ),
           eg(
-            actual = combination(Set(i0, i1, c0, r0)),
+            actual = gen(Set(i0, i1, c0, r0)),
             expected = Set(
               Set(Set(i0, c0, r0)),
               Set(Set(i1, c0, r0))
             )
           ),
           eg(
-            actual = combination(Set(i0, i1, c0, c1, r0)),
+            actual = gen(Set(i0, i1, c0, c1, r0)),
             expected = Set(
               Set(Set(i0, c0, r0)),
               Set(Set(i1, c0, r0)),
@@ -66,7 +67,7 @@ object CombinationBuilderSpec
             )
           ),
           eg(
-            actual = combination(Set(i0, c0, r0, r1)),
+            actual = gen(Set(i0, c0, r0, r1)),
             expected = Set(
               Set(Set(i0, c0, r0)),
               Set(Set(i0, c0, r1))
@@ -81,11 +82,11 @@ object CombinationBuilderSpec
 
         testEg("cross product")(
           eg(
-            actual = combinationWith(Set(i0, i1, c0))(_ => false),
+            actual = genWith(Set(i0, i1, c0))(_ => false),
             expected = Set.empty
           ),
           eg(
-            actual = combinationWith(Set(i0, i1, c0))(combination => {
+            actual = genWith(Set(i0, i1, c0))(combination => {
               (for {
                 i <- combination.findByType[Interviewer]
                 c <- combination.findByType[Candidate]

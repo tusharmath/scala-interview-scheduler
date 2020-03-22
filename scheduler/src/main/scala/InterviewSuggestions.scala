@@ -15,8 +15,8 @@ object InterviewSuggestions {
   ): Set[Set[Interview]] = {
     val resources = getResources(availability)
 
-    CombinationBuilder
-      .combination(resources)
+    Combination
+      .gen(resources)
       .map(_.flatMap(toInterview(_).toSet))
       .filter(_.nonEmpty)
   }

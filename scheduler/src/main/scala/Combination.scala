@@ -1,4 +1,4 @@
-object CombinationBuilder {
+object Combination {
   trait Resource {
     val kind: Int
   }
@@ -6,7 +6,7 @@ object CombinationBuilder {
   type Combination[R <: Resource]    = Set[R]
   type CombinationSet[R <: Resource] = Set[Set[Combination[R]]]
 
-  def combinationWith[R <: Resource](
+  def genWith[R <: Resource](
       resources: Set[R]
   )(cond: Set[R] => Boolean): CombinationSet[R] = {
     val resourceMap       = resources.groupBy(_.kind)
@@ -14,8 +14,8 @@ object CombinationBuilder {
 
     createCombinations(resources, resourceKindCount, cond)
   }
-  def combination[R <: Resource](resources: Set[R]): CombinationSet[R] = {
-    combinationWith(resources)(_ => true)
+  def gen[R <: Resource](resources: Set[R]): CombinationSet[R] = {
+    genWith(resources)(_ => true)
   }
 
   private def createCombinations[R <: Resource](

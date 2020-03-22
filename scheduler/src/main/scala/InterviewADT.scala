@@ -4,7 +4,7 @@ import scala.concurrent.duration._
 
 object InterviewADT {
   sealed abstract class EventResource(val kind: Int)
-      extends CombinationBuilder.Resource
+      extends Combination.Resource
 
   trait Experience
   object Experience {
@@ -52,11 +52,6 @@ object InterviewADT {
       interviewStartTime: LocalDateTime = LocalDateTime.now(),
       // Referrals
       referrals: Set[(Candidate, Interviewer)] = Set.empty
-  )
-
-  case class Combination(
-      interview: Interview,
-      availability: EventAvailability
   )
 
   case class Interview(
