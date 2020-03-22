@@ -1,3 +1,4 @@
+import adt._
 import zio.test.Assertion._
 import zio.test._
 
@@ -9,14 +10,17 @@ object EventAvailabilityOpsSpec extends DefaultRunnableSpec {
       testM("should remove resources") {
         val gen = for {
           availability <- EventAvailabilityGen.genEventAvailability
-          resource <- Gen.fromIterable(
-            availability.candidates ++ availability.rooms ++ availability.interviewers)
+          resource     <- Gen.fromIterable(getResources(availability))
         } yield (availability, resource)
         check(gen) {
-          case (eventAvailability, resource) =>
-            val hasResource = (eventAvailability - resource).has(resource)
+          case (eventAvailability, resource) => {
+            val nEventAvailability = eventAvailability - resource
+            val nResources         = getResources(nEventAvailability)
+            val hasResource        = nResources.contains(resource)
 
             assert(hasResource)(isFalse)
+          }
+
         }
       }
     },
@@ -25,9 +29,16 @@ object EventAvailabilityOpsSpec extends DefaultRunnableSpec {
         check(EventAvailabilityGen.genResource,
               EventAvailabilityGen.genEventAvailability)(
           (resource, eventAvailability) => {
-            val hasResource = (eventAvailability + resource).has(resource)
+            val nEventAvailability = eventAvailability + resource
+            val nResources         = getResources(nEventAvailability)
+            val hasResource        = nResources.contains(resource)
             assert(hasResource)(isTrue)
           }))
     }
   )
+
+  private def getResources(
+      availability: EventAvailability): Set[EventResource] = {
+    availability.candidates ++ availability.rooms ++ availability.interviewers
+  }
 }
