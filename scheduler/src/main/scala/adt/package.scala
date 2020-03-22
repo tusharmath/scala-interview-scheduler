@@ -2,7 +2,7 @@ import java.time.LocalDateTime
 
 import scala.concurrent.duration._
 
-object InterviewADT {
+package object adt {
   sealed abstract class EventResource(val kind: Int)
       extends Combination.Resource
 

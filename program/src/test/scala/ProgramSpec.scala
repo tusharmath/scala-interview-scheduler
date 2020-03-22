@@ -1,7 +1,7 @@
-import InterviewADT.{Candidate, Interviewer, Skill}
+import adt.{Candidate, Interviewer, Skill}
 import zio.test.Assertion._
-import zio.test.{DefaultRunnableSpec, _}
 import zio.test.environment.TestConsole
+import zio.test.{DefaultRunnableSpec, _}
 
 object ProgramSpec extends DefaultRunnableSpec {
   def spec =

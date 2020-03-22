@@ -1,6 +1,6 @@
-import InterviewADT._
-import Ops._
 import PreludeTest.ExampleRunnableSpec
+import adt._
+import syntax._
 import zio.test._
 object InterviewSuggestionsSpec
     extends DefaultRunnableSpec

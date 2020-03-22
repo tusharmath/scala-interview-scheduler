@@ -1,3 +1,5 @@
+package internal
+
 object TraversableOnceToString {
   def toString(A: Any, oSpace: String = ""): String = {
     val space = oSpace + "  "

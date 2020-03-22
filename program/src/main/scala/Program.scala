@@ -1,6 +1,6 @@
 import java.io.IOException
 
-import InterviewADT._
+import adt._
 import zio.console.Console
 import zio.{UIO, ZIO, console}
 

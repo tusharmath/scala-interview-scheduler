@@ -1,11 +1,8 @@
-import InterviewADT._
+package syntax.adt
 
-object Ops {
-  implicit class ResourceOps(resource: EventResource) {
-    def +(resource0: EventResource): EventAvailability = {
-      EventAvailability() + resource + resource0
-    }
-  }
+import adt._
+
+trait EventAvailabilitySyntax {
   implicit class EventAvailabilityOps(availability: EventAvailability) {
     def resourceCount: Int = {
       availability.rooms.size + availability.candidates.size + availability.interviewers.size

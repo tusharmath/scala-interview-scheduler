@@ -2,7 +2,7 @@ import zio.test.Assertion._
 import zio.test._
 
 object EventAvailabilityOpsSpec extends DefaultRunnableSpec {
-  import Ops._
+  import syntax._
 
   def spec = suite("EventAvailabilityOps")(
     suite("- Resource") {

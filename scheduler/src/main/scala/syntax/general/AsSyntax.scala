@@ -1,4 +1,4 @@
-package syntax
+package syntax.general
 
 import scala.reflect.ClassTag
 
