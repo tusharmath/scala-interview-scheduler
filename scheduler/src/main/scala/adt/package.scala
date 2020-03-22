@@ -1,7 +1,3 @@
-import java.time.LocalDateTime
-
-import scala.concurrent.duration._
-
 package object adt {
   sealed abstract class EventResource(val kind: Int)
       extends Combination.Resource
@@ -45,13 +41,7 @@ package object adt {
       // Rooms available for the interview
       rooms: Set[Room] = Set.empty,
       // Skills that have been interviewed for
-      candidateSkillMap: Map[Candidate, Set[Skill]] = Map.empty,
-      // Time period for one interview
-      interviewDuration: Duration = 1 hour,
-      // Starting time for the interview
-      interviewStartTime: LocalDateTime = LocalDateTime.now(),
-      // Referrals
-      referrals: Set[(Candidate, Interviewer)] = Set.empty
+      candidateSkillMap: Map[Candidate, Set[Skill]] = Map.empty
   )
 
   case class Interview(
