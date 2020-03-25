@@ -10,15 +10,17 @@ object dbNode {
   case class Digest(byte: Byte)
 
   case class DBNode(val previous: Option[Digest], val content: List[Byte]) {
-
-    def digest: UIO[Digest] = {
-      UIO(Digest(content.hashCode().toByte))
-    }
-    def serialize: UIO[List[Byte]] = {
-      UIO(Pickle.intoBytes(this).array().toList)
-    }
-
+    def digest: UIO[Digest]                    = dbNode.digest(content)
+    def serialize: UIO[List[Byte]]             = dbNode.serialize(this)
     def write: ZIO[RocksDB, Throwable, Digest] = dbNode.write(this)
+  }
+
+  private def digest(content: List[Byte]) = {
+    UIO(Digest(content.hashCode().toByte))
+  }
+
+  def serialize(node: DBNode): UIO[List[Byte]] = {
+    UIO(Pickle.intoBytes(node).array().toList)
   }
 
   def deserialize(bytes: List[Byte]): Task[DBNode] = {
