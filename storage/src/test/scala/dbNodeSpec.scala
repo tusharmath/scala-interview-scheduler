@@ -1,12 +1,12 @@
 import java.nio.file.{Files, Path}
 
-import storage.db.DBNode._
+import storage.db.dbNode._
 import zio._
 import zio.test.Assertion._
 import zio.test._
 
 import scala.reflect.io
-object DBNodeSpec extends DefaultRunnableSpec {
+object dbNodeSpec extends DefaultRunnableSpec {
 
   private def deletePath(path: Path): UIO[Boolean] =
     IO {
@@ -26,7 +26,7 @@ object DBNodeSpec extends DefaultRunnableSpec {
   override def spec = {
     suite("DBNodeSpec")(
       testM("get/put") {
-        val root = Root("ABC".getBytes().toList)
+        val root = DBNode(None, "ABC".getBytes().toList)
         for {
           digest <- root.write
           node   <- read(digest)

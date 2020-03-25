@@ -6,11 +6,11 @@ import boopickle.Default._
 import zio.rocksdb.RocksDB
 import zio.{Task, UIO, ZIO, rocksdb}
 
-object DBNode {
+object dbNode {
   case class Digest(byte: Byte)
 
-  sealed trait DBNode {
-    val content: List[Byte]
+  case class DBNode(val previous: Option[Digest], val content: List[Byte]) {
+
     def digest: UIO[Digest] = {
       UIO(Digest(content.hashCode().toByte))
     }
@@ -18,7 +18,7 @@ object DBNode {
       UIO(Pickle.intoBytes(this).array().toList)
     }
 
-    def write: ZIO[RocksDB, Throwable, Digest] = DBNode.write(this)
+    def write: ZIO[RocksDB, Throwable, Digest] = dbNode.write(this)
   }
 
   def deserialize(bytes: List[Byte]): Task[DBNode] = {
@@ -42,10 +42,4 @@ object DBNode {
         case None        => UIO(None)
       }
     } yield node
-
-  case class Root[T](content: List[Byte]) extends DBNode {
-    override def toString: String = s"Root($content)"
-  }
-  case class Commit(content: List[Byte]) extends DBNode
-  case class Branch(content: List[Byte]) extends DBNode
 }
