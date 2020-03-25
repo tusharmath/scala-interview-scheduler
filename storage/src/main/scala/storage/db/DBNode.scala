@@ -6,7 +6,7 @@ import boopickle.Default._
 import zio.rocksdb.RocksDB
 import zio.{Task, UIO, ZIO, rocksdb}
 
-package object dbNode {
+object DBNode {
   case class Digest(byte: Byte)
 
   sealed trait DBNode {
@@ -18,14 +18,14 @@ package object dbNode {
       UIO(Pickle.intoBytes(this).array().toList)
     }
 
-    def write: ZIO[RocksDB, Throwable, Digest] = dbNode.write(this)
+    def write: ZIO[RocksDB, Throwable, Digest] = DBNode.write(this)
   }
 
   def deserialize(bytes: List[Byte]): Task[DBNode] = {
     ZIO.fromTry(Unpickle[DBNode].tryFromBytes(ByteBuffer.wrap(bytes.toArray)))
   }
 
-  def write(node: dbNode.DBNode): ZIO[RocksDB, Throwable, dbNode.Digest] =
+  def write(node: DBNode): ZIO[RocksDB, Throwable, Digest] =
     for {
       digest <- node.digest
       value  <- node.serialize
@@ -33,16 +33,13 @@ package object dbNode {
     } yield digest
 
   def read(
-      digest: dbNode.Digest
-  ): ZIO[RocksDB, Throwable, Option[dbNode.DBNode]] =
+      digest: Digest
+  ): ZIO[RocksDB, Throwable, Option[DBNode]] =
     for {
       oBytes <- rocksdb.get(Array(digest.byte))
       node <- oBytes match {
-        case Some(value) =>
-          dbNode
-            .deserialize(value.toList)
-            .map(node => Some(node))
-        case None => UIO(None)
+        case Some(value) => deserialize(value.toList).map(node => Some(node))
+        case None        => UIO(None)
       }
     } yield node
 

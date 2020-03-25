@@ -1,13 +1,12 @@
 import java.nio.file.{Files, Path}
 
-import storage.db.dbNode
-import storage.db.dbNode.Root
+import storage.db.DBNode._
 import zio._
 import zio.test.Assertion._
 import zio.test._
 
 import scala.reflect.io
-object dbNodeSpec extends DefaultRunnableSpec {
+object DBNodeSpec extends DefaultRunnableSpec {
 
   private def deletePath(path: Path): UIO[Boolean] =
     IO {
@@ -25,12 +24,12 @@ object dbNodeSpec extends DefaultRunnableSpec {
     } yield service).toLayer.mapError(TestFailure.die)
 
   override def spec = {
-    suite("dbNodeSpec")(
+    suite("DBNodeSpec")(
       testM("get/put") {
         val root = Root("ABC".getBytes().toList)
         for {
           digest <- root.write
-          node   <- dbNode.read(digest)
+          node   <- read(digest)
         } yield {
 
           assert(node)(isSome(equalTo(root)))
