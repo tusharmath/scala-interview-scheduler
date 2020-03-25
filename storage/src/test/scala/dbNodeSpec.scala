@@ -1,13 +1,13 @@
 import java.nio.file.{Files, Path}
 
-import storage.db.DBState
+import storage.db.dbNode
 import storage.db.dbNode.Root
 import zio._
 import zio.test.Assertion._
 import zio.test._
 
 import scala.reflect.io
-object DBStateSpec extends DefaultRunnableSpec {
+object dbNodeSpec extends DefaultRunnableSpec {
 
   private def deletePath(path: Path): UIO[Boolean] =
     IO {
@@ -15,7 +15,7 @@ object DBStateSpec extends DefaultRunnableSpec {
     } <> UIO(false)
 
   private def managedDirectory =
-    Task(Files.createTempDirectory("zio-rocksdb"))
+    Task(Files.createTempDirectory("storage"))
       .toManaged(deletePath)
 
   private def testDB =
@@ -25,13 +25,12 @@ object DBStateSpec extends DefaultRunnableSpec {
     } yield service).toLayer.mapError(TestFailure.die)
 
   override def spec = {
-    suite("DBStateSpec")(
+    suite("dbNodeSpec")(
       testM("get/put") {
         val root = Root("ABC".getBytes().toList)
         for {
-          _      <- DBState.put(root)
-          digest <- root.digest
-          node   <- DBState.get(digest)
+          digest <- root.write
+          node   <- dbNode.read(digest)
         } yield {
 
           assert(node)(isSome(equalTo(root)))
