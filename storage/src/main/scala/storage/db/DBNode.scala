@@ -3,28 +3,27 @@ package storage.db
 import java.nio.ByteBuffer
 
 import boopickle.Default._
+import storage.db.DBNode.Digest
 import zio.rocksdb.RocksDB
 import zio.{Task, UIO, ZIO, rocksdb}
+case class DBNode(previous: Option[Digest], content: List[Byte]) {
+  def digest: UIO[Digest]                    = DBNode.digest(content)
+  def serialize: UIO[List[Byte]]             = DBNode.serialize(this)
+  def write: ZIO[RocksDB, Throwable, Digest] = DBNode.write(this)
+}
 
-object dbNode {
-  case class Digest(byte: Byte)
-
-  case class DBNode(val previous: Option[Digest], val content: List[Byte]) {
-    def digest: UIO[Digest]                    = dbNode.digest(content)
-    def serialize: UIO[List[Byte]]             = dbNode.serialize(this)
-    def write: ZIO[RocksDB, Throwable, Digest] = dbNode.write(this)
+object DBNode {
+  def apply(content: List[Byte]): DBNode = new DBNode(None, content)
+  def apply(previous: Digest, content: List[Byte]): DBNode = {
+    new DBNode(Some(previous), content)
   }
 
-  private def digest(content: List[Byte]) = {
+  def digest(content: List[Byte]) = {
     UIO(Digest(content.hashCode().toByte))
   }
 
   def serialize(node: DBNode): UIO[List[Byte]] = {
     UIO(Pickle.intoBytes(node).array().toList)
-  }
-
-  def deserialize(bytes: List[Byte]): Task[DBNode] = {
-    ZIO.fromTry(Unpickle[DBNode].tryFromBytes(ByteBuffer.wrap(bytes.toArray)))
   }
 
   def write(node: DBNode): ZIO[RocksDB, Throwable, Digest] =
@@ -44,4 +43,11 @@ object dbNode {
         case None        => UIO(None)
       }
     } yield node
+
+  def deserialize(bytes: List[Byte]): Task[DBNode] = {
+    ZIO.fromTry(Unpickle[DBNode].tryFromBytes(ByteBuffer.wrap(bytes.toArray)))
+  }
+
+  case class Digest(byte: Byte)
+
 }
