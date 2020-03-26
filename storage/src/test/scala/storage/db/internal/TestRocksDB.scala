@@ -1,4 +1,4 @@
-package storage.db
+package storage.db.internal
 
 import java.nio.file.{Files, Path}
 

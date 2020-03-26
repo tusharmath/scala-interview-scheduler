@@ -1,6 +1,7 @@
 package storage.db
 
 import storage.db.DBNode.read
+import storage.db.internal.TestRocksDB
 import zio.test.Assertion.{equalTo, isSome}
 import zio.test.{DefaultRunnableSpec, assert, suite, testM}
 
