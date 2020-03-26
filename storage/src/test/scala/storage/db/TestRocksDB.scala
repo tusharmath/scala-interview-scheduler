@@ -1,3 +1,5 @@
+package storage.db
+
 import java.nio.file.{Files, Path}
 
 import zio._
