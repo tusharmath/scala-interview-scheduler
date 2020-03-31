@@ -10,7 +10,7 @@ import zio.test._
 import scala.util.hashing.MurmurHash3
 
 object DBNodeSpec extends DefaultRunnableSpec {
-  private val properties = suite("properties")(
+  private val properties = List(
     suite("commit()")(
       testM("random sequence of bytes") {
         checkM(
@@ -97,8 +97,9 @@ object DBNodeSpec extends DefaultRunnableSpec {
 
   override def spec = {
     suite("DBNodeSpec")(
-      suite("memory")(properties.provideCustomLayer(TestRocksDB.memory)),
-      suite("disk")(properties.provideCustomLayerShared(TestRocksDB.disk)) @@ ignore
+      suite("memory")(properties: _*).provideCustomLayer(TestRocksDB.memory),
+      suite("disk")(properties: _*)
+        .provideCustomLayerShared(TestRocksDB.disk) @@ ignore
     )
   }
 }
